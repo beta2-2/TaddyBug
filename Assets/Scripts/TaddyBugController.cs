@@ -4,88 +4,91 @@ using UnityEngine;
 
 public class TaddyBugController : MonoBehaviour
 {
-    Rigidbody2D rb2d;
-    Animator animator;
-    float angle;
+    private Rigidbody2D _rb2d;
+    private Animator _animator;
+    private float _angle;
 
-    public float maxHeight;
-    public float flapVelocity;
-    public float relativeVelocityX;
-    public GameObject sprite;
-    bool isDead;
+    [SerializeField] private float _maxHeight;
+    [SerializeField] private float _flapVelocity;
+    [SerializeField] private float _relativeVelocityX;
+    [SerializeField] private GameObject _sprite;
 
+    private bool _isDead;
     public bool IsDead()
     {
-        return isDead;
-    }
-    void Awake()
-    {
-        rb2d = GetComponent<Rigidbody2D>();
-        animator = sprite.GetComponent<Animator>();
+        return _isDead;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
+        _rb2d = GetComponent<Rigidbody2D>();
+        _animator = _sprite.GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && transform.position.y < maxHeight)
+        if (Input.GetButtonDown("Fire1") && transform.position.y < _maxHeight)
         {
             Flap();
         }
 
         ApplyAngle();
-        animator.SetBool("flapUp", angle >= 0.0f);
-        animator.SetBool("flapDown", angle < 0.0f);
-        animator.SetBool("hurt", isDead);
+        _animator.SetBool("flapUp", _angle >= 0.0f);
+        _animator.SetBool("flapDown", _angle < 0.0f);
+        _animator.SetBool("hurt", _isDead);
     }
 
     public void Flap()
     {
-        if (isDead)
+        if (_isDead)
         {
             return;
         }
 
-        if(rb2d.isKinematic)
+        if(_rb2d?.isKinematic ?? false)
         {
             return;
         }
-        rb2d.velocity = new Vector2(0.0f, flapVelocity);
+
+        if(_rb2d != null)
+        {
+            _rb2d.velocity = new Vector2(0.0f, _flapVelocity);
+        }
+
     }
 
-    void ApplyAngle()
+    private void ApplyAngle()
     {
-        float targetAngle;
+        var targetAngle = 0f;
 
-        if (isDead)
+        if (_isDead)
         {
             targetAngle = -90.0f;
         }
         else
         {
-            targetAngle = Mathf.Atan2(rb2d.velocity.y * 0.1f, relativeVelocityX) * Mathf.Rad2Deg;
+            targetAngle = Mathf.Atan2(_rb2d.velocity.y * 0.1f, _relativeVelocityX) * Mathf.Rad2Deg;
         }
-        angle = Mathf.Lerp(angle, targetAngle, Time.deltaTime * 10.0f);
+        _angle = Mathf.Lerp(_angle, targetAngle, Time.deltaTime * 10.0f);
 
-        sprite.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+        _sprite.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _angle);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(isDead)
+        if (_isDead)
         {
             return;
         }
-        isDead = true;
+        _isDead = true;
     }
 
     public void SetSteerActive(bool active)
     {
-        rb2d.isKinematic = !active;
+        if (_rb2d != null)
+        {
+            _rb2d.isKinematic = !active;
+        }
     }
 }

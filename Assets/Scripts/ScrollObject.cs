@@ -5,29 +5,24 @@ using UnityEngine;
 public class ScrollObject : MonoBehaviour
 {
 
-    public float speed = 1.0f;
-    public float startPosition = 0.0f;
-    public float endPosition = 0.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    [SerializeField] private float _speed = 3.0f;
+    [SerializeField] private float _startPosition = 9.0f;
+    [SerializeField] private float _endPosition = -9.0f;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        transform.Translate(-1 * speed * Time.deltaTime, 0, 0);
+        transform.Translate(-1 * _speed * Time.deltaTime, 0, 0);
 
-        if (transform.position.x < endPosition)
+        if (transform.position.x < _endPosition)
         {
             ScrollEnd();
         }
     }
 
-    void ScrollEnd()
+    private void ScrollEnd()
     {                                             
-        transform.Translate(-1 * (endPosition - startPosition), 0, 0);
+        transform.Translate(-1 * (_endPosition - _startPosition), 0, 0);
         SendMessage("OnScrollEnd", SendMessageOptions.DontRequireReceiver);
     }
 }

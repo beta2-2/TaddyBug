@@ -6,35 +6,31 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    enum State
+    private enum State
     {
         Ready,
         Play,
         GameOver
     }
 
-    State state;
-    int score;
+    [SerializeField] private Text _scoreLabel;
+    [SerializeField] private Text _stateLabel;
+    [SerializeField] private GameObject _blocks;
+    [SerializeField] private TaddyBugController _taddyBug;
 
-    public TaddyBugController taddyBug;
-    public GameObject blocks;
-    public Text scoreLabel;
-    public Text stateLabel;
+
+    private State _state;
+    private int _score;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         Ready();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-    }
-
-    void LateUpdate()
-    {
-        switch (state)
+        switch (_state)
         {
             case State.Ready:
                 if (Input.GetButtonDown("Fire1"))
@@ -44,7 +40,7 @@ public class GameController : MonoBehaviour
                 break;
 
             case State.Play:
-                if (taddyBug.IsDead())
+                if (_taddyBug.IsDead())
                 {
                     GameOver();
                 }
@@ -59,51 +55,56 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void Ready()
+    private void Ready()
     {
-        state = State.Ready;
-        taddyBug.SetSteerActive(false);
-        blocks.SetActive(false);
+        _state = State.Ready;
+        _taddyBug.SetSteerActive(false);
+        _blocks.SetActive(false);
 
-        scoreLabel.text = "Score : " + 0;
-        stateLabel.gameObject.SetActive(true);
-        stateLabel.text = "Ready";
+        _scoreLabel.text = "Score : " + 0;
+        _stateLabel.gameObject.SetActive(true);
+        _stateLabel.text = "Ready";
     }
 
-    void GameStart()
+    private void GameStart()
     {
-        state = State.Play;
+        _state = State.Play;
 
-        taddyBug.SetSteerActive(true);
-        blocks.SetActive(true);
-        taddyBug.Flap();
+        _taddyBug.SetSteerActive(true);
+        _blocks.SetActive(true);
+        _taddyBug.Flap();
 
-        stateLabel.gameObject.SetActive(false);
-        stateLabel.text = "";
+        _stateLabel.gameObject.SetActive(false);
+        _stateLabel.text = "";
     }
 
-    void GameOver()
+    private void GameOver()
     {
-        state = State.GameOver;
+        _state = State.GameOver;
 
-        ScrollObject[] scrollObjects = GameObject.FindObjectsOfType<ScrollObject>();
-        foreach (ScrollObject item in scrollObjects)
+        var scrollObjects = GameObject.FindObjectsOfType<ScrollObject>();
+        foreach (var item in scrollObjects)
         {
             item.enabled = false;
         }
 
-        stateLabel.gameObject.SetActive(true);
-        stateLabel.text = "GameOver";
+        _stateLabel.gameObject.SetActive(true);
+        _stateLabel.text = "GameOver";
     }
 
-    void Reload()
+    private void CountDown()
+    {
+
+    }
+
+    private void Reload()
     {
         SceneManager.LoadScene(0);
     }
 
     public void IncreaseScore()
     {
-        score++;
-        scoreLabel.text = "Score : " + score;
+        _score++;
+        _scoreLabel.text = "Score : " + _score;
     }
 }

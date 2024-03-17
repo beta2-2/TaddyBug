@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class TestController : MonoBehaviour
 {
-    Animator anim = new Animator();
+    private Animator _anim = new Animator();
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        anim = this.GetComponent<Animator>();
-        anim.SetBool("flapDown", true);
+        _anim = this.GetComponent<Animator>();
+        _anim.SetBool("flapDown", true);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            anim.SetBool("flapDown", false);
-            anim.SetBool("flapUp", true);
-        } else if(Input.GetKeyUp(KeyCode.W))
+            _anim.SetBool("flapDown", false);
+            _anim.SetBool("flapUp", true);
+        } 
+        else if(Input.GetKeyUp(KeyCode.W))
         {
-            anim.SetBool("flapUp", false);
-            anim.SetBool("flapDown", true);
+            _anim.SetBool("flapUp", false);
+            _anim.SetBool("flapDown", true);
         }
 
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            anim.SetBool("flapDown", false);
-            anim.SetBool("flapUp", false);
-            anim.SetBool("hurt", true);
+            _anim.SetBool("flapDown", false);
+            _anim.SetBool("flapUp", false);
+            _anim.SetBool("hurt", true);
         }
 
     }

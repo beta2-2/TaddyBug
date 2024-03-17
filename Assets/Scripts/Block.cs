@@ -4,28 +4,22 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    public float minHeight;
-    public float maxHeight;
-    public GameObject pivot;
+    [SerializeField] private float _minHeight;
+    [SerializeField] private float _maxHeight;
+    [SerializeField] private GameObject _pivot;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         ChangeHeight();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ChangeHeight()
     {
-        
-    }
-   
-    void ChangeHeight()
-    {
-        float height = Random.Range(minHeight, maxHeight);
-        pivot.transform.localPosition = new Vector3(0.0f, height, 0.0f);
+        var height = Random.Range(_minHeight, _maxHeight);
+        _pivot.transform.localPosition = new Vector3(0.0f, height, 0.0f);
     }
 
-    void OnScrollEnd()
+    private void OnScrollEnd()
     {
         ChangeHeight();
     }
