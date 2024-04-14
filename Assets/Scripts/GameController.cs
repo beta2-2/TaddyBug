@@ -104,7 +104,11 @@ public class GameController : MonoBehaviour
 
     public void IncreaseScore()
     {
-        _score++;
-        _scoreLabel.text = "Score : " + _score;
+        if (_scoreLabel != null)
+        {
+            _score++;
+            _scoreLabel.text = "Score : " + _score;
+        }
+        
     }
 }
