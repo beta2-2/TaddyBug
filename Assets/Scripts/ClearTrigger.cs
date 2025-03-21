@@ -13,7 +13,9 @@ public class ClearTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        _gameController.SendMessage("IncreaseScore");
+        if (_gameController != null)
+            _gameController.SendMessage("IncreaseScore");
+
     }
 
 }

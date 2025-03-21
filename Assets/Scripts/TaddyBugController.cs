@@ -46,14 +46,14 @@ public class TaddyBugController : MonoBehaviour
             return;
         }
 
-        if(_rb2d?.isKinematic ?? false)
+        if(_rb2d?.bodyType == RigidbodyType2D.Kinematic)
         {
             return;
         }
 
         if(_rb2d != null)
         {
-            _rb2d.velocity = new Vector2(0.0f, _flapVelocity);
+            _rb2d.linearVelocity = new Vector2(0.0f, _flapVelocity);
         }
 
     }
@@ -68,7 +68,7 @@ public class TaddyBugController : MonoBehaviour
         }
         else
         {
-            targetAngle = Mathf.Atan2(_rb2d.velocity.y * 0.1f, _relativeVelocityX) * Mathf.Rad2Deg;
+            targetAngle = Mathf.Atan2(_rb2d.linearVelocity.y * 0.1f, _relativeVelocityX) * Mathf.Rad2Deg;
         }
         _angle = Mathf.Lerp(_angle, targetAngle, Time.deltaTime * 10.0f);
 
@@ -88,7 +88,7 @@ public class TaddyBugController : MonoBehaviour
     {
         if (_rb2d != null)
         {
-            _rb2d.isKinematic = !active;
+            _rb2d.bodyType = active ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
         }
     }
 }

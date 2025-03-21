@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour
     {
         _state = State.GameOver;
 
-        var scrollObjects = GameObject.FindObjectsOfType<ScrollObject>();
+        var scrollObjects = GameObject.FindObjectsByType<ScrollObject>(FindObjectsSortMode.None);
         foreach (var item in scrollObjects)
         {
             item.enabled = false;
