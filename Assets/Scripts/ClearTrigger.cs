@@ -2,17 +2,20 @@ using UnityEngine;
 
 public class ClearTrigger : MonoBehaviour
 {
-    private GameObject _gameController;
+    private Block _block;
+    private GameController _game;
+
     private void Start()
     {
-        _gameController = GameObject.FindWithTag("GameController");
+        _block = GetComponentInParent<Block>();
+        _game = FindFirstObjectByType<GameController>();
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (_gameController != null)
-            _gameController.SendMessage("IncreaseScore");
-
+        if (_game != null && _block != null)
+        {
+            _game.RegisterPass(other.attachedRigidbody, _block);
+        }
     }
-
 }
